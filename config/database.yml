@@ -1,0 +1,26 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: learning_app-dev
+  pool: 5
+  host: localhost
+  username: action
+  password: password
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: learning_app-test
+  pool: 5
+  host: localhost
+  username: action
+  password: password
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: learning_app-prod
+  pool: 5
+  host: localhost
+  username: action
+  password: password
