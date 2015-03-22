@@ -1,0 +1,42 @@
+<p>
+  <strong>Title:</strong>
+  <%= @quiz.title %>
+</p>
+
+<p>
+  <strong>Topic:</strong>
+  <%= @quiz.topic %>
+</p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @quiz.question %>
+</p>
+
+<p>
+  <strong>Answer 1:</strong>
+  <%= @quiz.ans1 %>
+</p>
+
+<p>
+  <strong>Answer 2:</strong>
+  <%= @quiz.ans2 %>
+</p>
+
+<p>
+  <strong>Answer 3:</strong>
+  <%= @quiz.ans3 %>
+</p>
+
+<p>
+  <strong>Answer 4:</strong>
+  <%= @quiz.ans4 %>
+</p>
+
+<p>
+  <strong>Correct Answer:</strong>
+  <%= @quiz.correctAns %>
+</p>
+
+<%= link_to 'Edit', edit_quiz_path(@quiz) %> |
+<%= link_to 'Back', quizzes_path %>

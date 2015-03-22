@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318232841) do
+ActiveRecord::Schema.define(version: 20150320161356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "quizzes", force: true do |t|
+    t.string   "title"
+    t.integer  "topic"
+    t.text     "question"
+    t.text     "ans1"
+    t.text     "ans2"
+    t.text     "ans3"
+    t.text     "ans4"
+    t.integer  "correctAns"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false

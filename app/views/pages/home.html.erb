@@ -1,8 +1,23 @@
 <h1>Pages#home</h1>    
-  <p>Find me in app/views/pages/home.html.erb</p>
-   <% if current_user.admin? %>
-    <li>you are admin</li>
-    <% else %>
-    <li>you are not admin</li>
-   <% end %> 
 
+<% if current_user.admin? %>
+    <%= link_to "Quiz Questions", quizzes_path %>
+    <li>you are admin</li>
+<% else %>
+    <li>you are not admin</li>
+    <tbody>
+    <% @quizzes.each do |quiz| %>
+      <tr>
+        <td><%= quiz.title %></td>
+        <td><%= quiz.topic %></td>
+        <td><%= quiz.question %></td>
+        <td><%= quiz.ans1 %></td>
+        <td><%= quiz.ans2 %></td>
+        <td><%= quiz.ans3 %></td>
+        <td><%= quiz.ans4 %></td>
+        <td><%= quiz.correctAns %></td> 
+      </tr>
+    <% end %>
+  </tbody>
+<% end %> 
+ 
