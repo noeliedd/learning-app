@@ -1,12 +1,13 @@
 class QuizzesController < ApplicationController  
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
   before_filter :is_admin?
-  
+
   def is_admin?
     if current_user.admin?
       true
     else
-      redirect_to "#home"
+      @quizzes = Quiz.where(:topic => [1..current_user.level]) 
+      respond_with(@quizzes)
     end
   end
   before_action :set_quiz, only: [:show, :edit, :update, :destroy]
@@ -14,6 +15,7 @@ class QuizzesController < ApplicationController
   respond_to :html
 
   def index
+    #@quizzes = Quiz.where(topic: params[:level])
     @quizzes = Quiz.all
     respond_with(@quizzes)
   end
