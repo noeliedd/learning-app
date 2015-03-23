@@ -1,10 +1,11 @@
 <h1>Pages#home</h1>    
-
 <% if current_user.admin? %>
-  <%= link_to "Quiz Questions", quizzes_path %>
-  <li>you are admin</li>
+<%= link_to "Add Subject", new_subject_path %>
+<%= link_to "Subjects", subjects_path %>
+  <li>ADMIN USER</li>
+  
 <% else %>
   <li>you are not admin</li>
-<%= link_to "Attempt Quiz", quizzes_path %>  
+<%= link_to "Subjects", subjects_path %>  
 <% end %> 
  

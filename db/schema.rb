@@ -11,23 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150322133622) do
+ActiveRecord::Schema.define(version: 20150322222757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "quizzes", force: true do |t|
-    t.string   "title"
-    t.integer  "topic"
-    t.text     "question"
-    t.text     "ans1"
-    t.text     "ans2"
-    t.text     "ans3"
-    t.text     "ans4"
-    t.integer  "correctAns"
+  create_table "subjects", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "topics", force: true do |t|
+    t.string   "name"
+    t.integer  "Subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "topics", ["Subject_id"], name: "index_topics_on_Subject_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -43,7 +45,6 @@ ActiveRecord::Schema.define(version: 20150322133622) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin",                  default: false, null: false
-    t.integer  "level",                  default: 1,     null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

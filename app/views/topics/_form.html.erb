@@ -1,0 +1,19 @@
+<h3>Add topic to Subject:</h3> 
+<%= bootstrap_form_for(@topic, layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-7") do |f| %>
+  <% if @topic.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@topic.errors.count, "error") %> prohibited this topic from being saved:</h2>
+
+      <ul>
+      <% @topic.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <%= f.text_field :name %> 
+    <%= f.text_field :Subject_id %> 
+    <%= f.submit %>
+
+<% end %>
