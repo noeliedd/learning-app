@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(version: 20150322222757) do
 
   create_table "topics", force: true do |t|
     t.string   "name"
-    t.integer  "Subject_id"
+    t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "topics", ["Subject_id"], name: "index_topics_on_Subject_id", using: :btree
+  add_index "topics", ["subject_id"], name: "index_topics_on_subject_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false

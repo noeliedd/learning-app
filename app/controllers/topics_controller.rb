@@ -15,7 +15,7 @@ class TopicsController < ApplicationController
   def new
     puts params.inspect
     @topic = Topic.new
-    @topic.Subject_id = params[:Subject_id]
+    @topic.subject_id = params[:subject_id]
     #respond_with(@topic)
   end
 
@@ -45,6 +45,6 @@ class TopicsController < ApplicationController
     end
 
     def topic_params
-      params.require(:topic).permit(:name, :Subject_id)
+      params.require(:topic).permit(:name, :subject_id)
     end
 end
