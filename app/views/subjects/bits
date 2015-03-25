@@ -1,0 +1,2 @@
+        <!-- <% @topic_notes = @notes.where(topic_id: topic.id) %> -->
+        <!--  <% @topic_notes.each do |note| %> -->

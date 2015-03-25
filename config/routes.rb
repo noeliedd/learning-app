@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :notes
   resources :topics
-
-   resources :subjects
+  resources :subjects
 
     devise_for :users
     root 'pages#home'

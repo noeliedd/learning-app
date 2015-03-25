@@ -10,8 +10,8 @@
 
   <tbody>
     <% @subjects.each do |subject| %>
-      <tr><%= subject.id %>
-        <td><%= link_to subject.name, new_topic_path(subject_id: subject.id) %></td>
+      <tr>
+        <td><%= link_to subject.name, subject %></td>
         <td><%= link_to 'Edit', edit_subject_path(subject) %></td>
         <td><%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -21,4 +21,4 @@
 
 <br>
 
-<%= link_to 'New Subject', new_subject_path %>
+<%= link_to 'Add New Subject', new_subject_path, :class => "btn btn-large btn-primary pull-left" %>

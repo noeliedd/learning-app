@@ -1,5 +1,4 @@
-<h1>Listing topics</h1>
-
+<h3>Subject: <%= @subject_name %> id:<%= @subject_id %></h3>
 <table>
   <thead>
     <tr>
@@ -12,7 +11,7 @@
   <tbody>
     <% @topics.each do |topic| %>
       <tr>
-        <td><%= topic.name %></td>
+        <td><%= topic.name%></td>
         <td><%= topic.subject_id %></td>
         <td><%= link_to 'Show', topic %></td>
         <td><%= link_to 'Edit', edit_topic_path(topic) %></td>
@@ -24,4 +23,4 @@
 
 <br>
 
-<%= link_to 'New Topic', new_topic_path %>
+<%= link_to 'New Topic', new_topic_path(subject_id: @subject_id) %>

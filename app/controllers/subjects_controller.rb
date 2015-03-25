@@ -5,11 +5,13 @@ class SubjectsController < ApplicationController
 
   def index
     @subjects = Subject.all
-    respond_with(@subjects)
+    #respond_with(@subjects)
   end
 
   def show
-    respond_with(@subject)
+    @notes = Note.all
+    @topics = Topic.where(:subject_id => @subject.id)     
+    #respond_with(@subject)
   end
 
   def new
@@ -23,8 +25,8 @@ class SubjectsController < ApplicationController
   def create
     @subject = Subject.new(subject_params)
     @subject.save
-    flash[:notice] = "Subject successfully created"
-    redirect_to new_subject_path
+    flash[:notice] = "Subject Successfully Added"
+    redirect_to subjects_path
   end
 
   def update
@@ -40,6 +42,7 @@ class SubjectsController < ApplicationController
   private
     def set_subject
       @subject = Subject.find(params[:id])
+      session[:current_subject] = @subject.id
     end
 
     def subject_params

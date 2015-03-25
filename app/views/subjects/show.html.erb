@@ -1,9 +1,22 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @subject.name %>
-</p>
-
-<%= link_to 'Edit', edit_subject_path(@subject) %> |
-<%= link_to 'Back', subjects_path %>
+<h3><%= @subject.name %></h3>
+<hr />
+  <tbody>
+    <% @topics.each do |topic| %>
+     <h4><%= topic.name %></h4>     
+      <ul>  
+        <li><%= link_to 'Add Notes', new_note_path(:topic_id => topic.id) %></li>
+         <% @topic_notes = @notes.where(topic_id: topic.id) %>
+         <% @topic_notes.each do |note| %>        
+         <ul>
+            <li><%= link_to note.filename, note %></li>
+         </ul>
+         <% end %>
+         <li><%= link_to 'Edit', edit_topic_path(topic) %></li>
+         <li><%= link_to 'Destroy', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+      </ul>
+    <hr class="soften" />
+   <% end %>
+  </tbody>
+<br>
+<%= button_to "Back to Subjects", subjects_path, :class => "btn btn-large btn-primary pull-left", :method => :get  %>
+<%= button_to "Add New Topic", new_topic_path, :class => "btn btn-large btn-primary pull-right", :method => :get  %>
