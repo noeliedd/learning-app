@@ -34,7 +34,7 @@ end
     #@note.topic_id = current_topic.id
     respond_to do |format|
       if @note.save
-        format.html { redirect_to subject_path(current_subject.id), notice: 'Note was successfully created.' }
+        format.html { redirect_to subject_path(current_subject.id), notice: 'Notes uploaded successfully.' }
         format.json { render :show, status: :created, location: @note }
       else
         format.html { render :new }

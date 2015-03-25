@@ -24,9 +24,13 @@ class SubjectsController < ApplicationController
 
   def create
     @subject = Subject.new(subject_params)
-    @subject.save
-    flash[:notice] = "Subject Successfully Added"
-    redirect_to subjects_path
+    if @subject.save
+      flash[:notice] = "Subject Successfully Added"
+      redirect_to subjects_path
+    else
+      flash[:notice] = "Name cannot be blank"  
+      redirect_to new_subject_path
+    end  
   end
 
   def update

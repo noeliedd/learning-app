@@ -1,11 +1,12 @@
 <h3><%= @subject.name %></h3>
 <hr />
   <tbody>
-    <% @topics.each do |topic| %>
+    <% @topics.order(created_at: :asc).each do |topic| %>
      <h4><%= topic.name %></h4>     
       <ul>  
-        <li><%= link_to 'Add Notes', new_note_path(:topic_id => topic.id) %></li>
+        <li><%= link_to 'Upload Notes', new_note_path(:topic_id => topic.id) %></li>
          <% @topic_notes = @notes.where(topic_id: topic.id) %>
+          <h5>Notes:</h5>
          <% @topic_notes.each do |note| %>        
          <ul>
             <li><%= link_to note.filename, note %></li>

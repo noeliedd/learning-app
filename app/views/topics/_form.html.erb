@@ -1,4 +1,4 @@
-<h3>Add New Topic: <%= @subject_name %> </h3>  
+<h4><%= @topic.name %> </h4>  
 <%= bootstrap_form_for(@topic,layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-7") do |f| %>
   <% if @topic.errors.any? %>
     <div id="error_explanation">
