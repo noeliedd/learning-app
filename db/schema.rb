@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150324125241) do
+ActiveRecord::Schema.define(version: 20150325181149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,29 @@ ActiveRecord::Schema.define(version: 20150324125241) do
   end
 
   add_index "notes", ["topic_id"], name: "index_notes_on_topic_id", using: :btree
+
+  create_table "questions", force: :cascade do |t|
+    t.text     "question"
+    t.text     "ans1"
+    t.text     "ans2"
+    t.text     "ans3"
+    t.integer  "correctAnswer"
+    t.integer  "quiz_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "questions", ["quiz_id"], name: "index_questions_on_quiz_id", using: :btree
+
+  create_table "quizzes", force: :cascade do |t|
+    t.string   "name"
+    t.string   "level"
+    t.integer  "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "quizzes", ["topic_id"], name: "index_quizzes_on_topic_id", using: :btree
 
   create_table "subjects", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -63,4 +86,6 @@ ActiveRecord::Schema.define(version: 20150324125241) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "notes", "topics"
+  add_foreign_key "questions", "quizzes"
+  add_foreign_key "quizzes", "topics"
 end

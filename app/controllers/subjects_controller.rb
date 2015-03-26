@@ -5,13 +5,12 @@ class SubjectsController < ApplicationController
 
   def index
     @subjects = Subject.all
-    #respond_with(@subjects)
   end
 
   def show
+    @quizzes = Quiz.all
     @notes = Note.all
     @topics = Topic.where(:subject_id => @subject.id)     
-    #respond_with(@subject)
   end
 
   def new

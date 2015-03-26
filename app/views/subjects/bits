@@ -1,2 +1,3 @@
         <!-- <% @topic_notes = @notes.where(topic_id: topic.id) %> -->
         <!--  <% @topic_notes.each do |note| %> -->
+        <%= f.select :level, options_for_select(["Easy","Medium","Hard"], params[:level])%>

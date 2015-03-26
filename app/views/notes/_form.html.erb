@@ -1,4 +1,4 @@
-<%= form_for(@note) do |f| %>
+<%= bootstrap_form_for(@note) do |f| %>
   <% if @note.errors.any? %>
     <div id="error_explanation">
       <ul>
@@ -8,14 +8,13 @@
       </ul>
     </div>
   <% end %>
-  <div class="field">
+
     <%= f.file_field :file %>
-  </div>
-  <div class="field">
-    <%= f.label :topic_id %><br>
-    <%= f.text_field :topic_id %>
-  </div>
+    <%= f.hidden_field :topic_id %>
+
   <div class="actions">
     <%= f.submit 'Upload Notes', :class => 'btn btn-large btn-primary pull-right'%>
   </div>
+
+  <%= link_to 'Back', subject_path(current_subject.id)%>
 <% end %>

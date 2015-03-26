@@ -5,17 +5,16 @@ class TopicsController < ApplicationController
 
   def index
     @topics = Topic.where('subject_id' => current_subject.id)
-    #respond_with(@topics)
   end
 
   def show
     @notes = Note.where(:topic_id => @topic.id)
+    @quizzes = Quiz.where(:topic_id => @topic.id)
     respond_with(@topic)
   end
 
   def new
     @topic = Topic.new
-    #espond_with(@topic)
   end
 
   def edit
@@ -26,7 +25,7 @@ class TopicsController < ApplicationController
     @topic = Topic.new(topic_params) 
     @topic.subject_id = current_subject.id
     if @topic.save
-      flash[:notice] = "Topic successfully created"
+      flash[:notice] = "Topic successfully added"
       redirect_to subject_path(current_subject.id)
     else
       flash[:notice] = "Name cannot be blank"

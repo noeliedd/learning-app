@@ -1,21 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  topic: 1
-  question: MyText
-  ans1: MyText
-  ans2: MyText
-  ans3: MyText
-  ans4: MyText
-  correctAns: 1
+  name: MyString
+  level: MyString
+  topic_id: 
 
 two:
-  title: MyString
-  topic: 1
-  question: MyText
-  ans1: MyText
-  ans2: MyText
-  ans3: MyText
-  ans4: MyText
-  correctAns: 1
+  name: MyString
+  level: MyString
+  topic_id: 

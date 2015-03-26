@@ -4,20 +4,49 @@
     <% @topics.order(created_at: :asc).each do |topic| %>
      <h4><%= topic.name %></h4>     
       <ul>  
-        <li><%= link_to 'Upload Notes', new_note_path(:topic_id => topic.id) %></li>
-         <% @topic_notes = @notes.where(topic_id: topic.id) %>
-          <h5>Notes:</h5>
+        <li><%= link_to 'Click to Upload Notes', new_note_path(:topic_id => topic.id) %></li>
+         <% @topic_notes = @notes.where(topic_id: topic.id) %>        
+         <h5>Notes:</h5>        
          <% @topic_notes.each do |note| %>        
-         <ul>
-            <li><%= link_to note.filename, note %></li>
-         </ul>
+           <ul>
+              <li><%= link_to note.filename, note %></li>
+           </ul>
          <% end %>
-         <li><%= link_to 'Edit', edit_topic_path(topic) %></li>
-         <li><%= link_to 'Destroy', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+        
+         <li><%= link_to 'Click to Add Quiz', new_quiz_path(:topic_id => topic.id) %></li>
+         <% @topic_quizzes = @quizzes.where(topic_id: topic.id) %> 
+         <h5>Quizzes:</h5>
+         <table class="table table-bordered">
+             <tr>
+               <th>Name</th>
+               <th>Level</th>
+               <th>Add/Edit Questions</th>
+               <th>Delete Quiz</th>
+           </tr>
+           <% @topic_quizzes.each do |quiz| %>            
+                <tr class="info">
+                   <td>
+                     <%= quiz.name %>
+                   </td>
+                   <td>
+                     <%= quiz.level %>
+                   </td>                
+                   <td>
+                     <%= link_to 'View Questions', questions_path(:quiz_id => quiz.id)%>
+                   </td>
+                   <td>
+                       <%= link_to 'Delete Quiz',quiz, method: :delete, data: { confirm: 'Are you sure?' }%>
+                   </td>                
+               </tr>
+            <% end %>  
+          </table>
+               
+          <li><%= link_to 'Edit Topic Name', edit_topic_path(topic) %></li>
+          <li><%= link_to 'Delete Topic', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>
       </ul>
     <hr class="soften" />
    <% end %>
   </tbody>
 <br>
-<%= button_to "Back to Subjects", subjects_path, :class => "btn btn-large btn-primary pull-left", :method => :get  %>
+<%= link_to "Back to Subjects", subjects_path %>
 <%= button_to "Add New Topic", new_topic_path, :class => "btn btn-large btn-primary pull-right", :method => :get  %>

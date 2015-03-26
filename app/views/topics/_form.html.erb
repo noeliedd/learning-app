@@ -1,5 +1,4 @@
-<h4><%= @topic.name %> </h4>  
-<%= bootstrap_form_for(@topic,layout: :horizontal, label_col: "col-sm-3", control_col: "col-sm-7") do |f| %>
+<%= bootstrap_form_for(@topic) do |f| %>
   <% if @topic.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@topic.errors.count, "error") %> prohibited this topic from being saved:</h2>
@@ -11,7 +10,7 @@
     </div>
   <% end %> 
     <%= f.text_field :name %> 
-    <%= f.submit :class => 'btn btn-large btn-primary pull-right' %>
-
+    <div class="actions">
+      <%= f.submit :class => 'btn btn-large btn-primary pull-right' %>
+    </div>
 <% end %>
-<%= button_to "Back to Topics", subject_path(current_subject.id), :class => "btn btn-large btn-primary pull-left", :method => :get  %>
