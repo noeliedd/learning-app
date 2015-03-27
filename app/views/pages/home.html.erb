@@ -1,11 +1,14 @@
-<h1>Pages#home</h1>    
-<% if current_user.admin? %>
-<!--<%= link_to "Add Subject", new_subject_path %>-->
-<%= link_to "Subjects", subjects_path %>
-  <li>ADMIN USER</li>
-  
-<% else %>
-  <li>you are not admin</li>
-<%= link_to "Subjects", subjects_path %>  
-<% end %> 
- 
+<div class = "container">
+    <div class="row">
+      <div class="col-xs-8 col-centered">
+        <h1 class="center">Learning App Home Page</h1>    
+        <% if current_user.admin? %>
+          <h4 class="center">You Are Logged in as an Administrator</h4>     
+          <%= button_to "Administer Subjects", subjects_path, :class => "btn btn-default btn-lg btn-block", :method => :get  %>
+        <% else %>
+          <h4 class="center">You are Logged in as a User</h4>
+          <%= button_to "Go to Subjects", subjects_path, :class => "btn btn-default btn-lg btn-block", :method => :get  %>
+        <% end %> 
+       </div>
+  </div>
+</div> 

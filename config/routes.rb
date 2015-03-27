@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :quiz_attempts
   resources :questions
   resources :quizzes
   resources :notes
