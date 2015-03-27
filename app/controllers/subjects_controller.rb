@@ -1,6 +1,6 @@
 class SubjectsController < ApplicationController
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
-
+  
   respond_to :html
 
   def index
@@ -8,6 +8,7 @@ class SubjectsController < ApplicationController
   end
 
   def show
+    @quiz_attempts = QuizAttempt.all
     @quizzes = Quiz.all
     @notes = Note.all
     @topics = Topic.where(:subject_id => @subject.id)     

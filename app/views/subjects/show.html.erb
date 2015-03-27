@@ -1,15 +1,16 @@
 <h3><%= @subject.name %></h3>
+<!-- ###################################### Admin View ###################################################### -->
+<% if current_user.admin? %>
 <hr />
   <tbody>
     <% @topics.order(created_at: :asc).each do |topic| %>
      <h4><%= topic.name %></h4>     
       <ul>  
-        <% if current_user.admin? %>
           <li><%= link_to 'Click to Upload Notes', new_note_path(:topic_id => topic.id) %></li>
           <li><%= link_to 'Click to Add Quiz', new_quiz_path(:topic_id => topic.id) %></li>
           <li><%= link_to 'Edit Topic Name', edit_topic_path(topic) %></li>
           <li><%= link_to 'Delete Topic', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>        
-        <% end %>
+      </ul>
          <% @topic_notes = @notes.where(topic_id: topic.id) %>        
          <h5>Notes:</h5>        
          <% @topic_notes.each do |note| %>        
@@ -24,10 +25,8 @@
              <tr>
                <th>Name:</th>
                <th>Level:</th>
-             <% if current_user.admin? %> 
                <th>Add/Edit Questions:</th>
                <th>Delete Quiz:</th>
-             <% end %>  
            </tr>
            <% @topic_quizzes.each do |quiz| %>            
                 <tr class="info">
@@ -41,24 +40,59 @@
                    <td>
                      <%= quiz.level %>
                    </td>   
-                  <% if current_user.admin? %>
                    <td>
                      <%= link_to 'Add/Edit Questions', questions_path(:quiz_id => quiz.id)%>
                    </td>
                    <td>
                        <%= link_to 'Delete Quiz',quiz, method: :delete, data: { confirm: 'Are you sure?' }%>
-                   </td>  
-                  <% end %>  
+                   </td> 
                </tr>
             <% end %>  
-          </table>               
-
-      </ul>
+          </table>    
     <hr class="soften" />
    <% end %>
   </tbody>
 <br>
 <%= link_to "Back to Subjects", subjects_path %>
-<% if current_user.admin? %>
   <%= button_to "Add Topic", new_topic_path, :class => "btn btn-large btn-primary pull-right", :method => :get  %>
+<% else %>
+<!-- ###################################### User View ###################################################### -->
+<hr />
+  <tbody>
+    <% @topics.order(created_at: :asc).each do |topic| %>
+     <h4><%= topic.name %></h4>       
+
+         <% @topic_notes = @notes.where(topic_id: topic.id) %>        
+         <h5>Notes:</h5>        
+         <% @topic_notes.each do |note| %>        
+           <ul>
+              <li><%= link_to note.filename, note %></li>
+           </ul>
+         <% end %>     
+         
+         <% @topic_quizzes = @quizzes.where(topic_id: topic.id) %> 
+         <h5>Quizzes:</h5>
+         <table class="table table-bordered">
+             <tr>
+               <th>Name:</th>
+               <th>Level:</th>
+           </tr>
+           <% @topic_quizzes.each do |quiz| %>        
+
+                <tr class="info">
+                   <td>
+                     <!--<% @attempts = @quiz_attempts.where(user_id: current_user.id) %> -->
+                     <%= link_to quiz.name, new_quiz_attempt_path(:quiz_id => quiz.id) %>
+                   </td>
+                   <td>
+                     <%= quiz.level %>
+                   </td>   
+               </tr>
+            <% end %>  
+          </table>      
+    <hr class="soften" />
+   <% end %>
+  </tbody>
+<br>
+<%= link_to "Back to Subjects", subjects_path %>
 <% end %>

@@ -1,10 +1,10 @@
 class QuizAttemptsController < ApplicationController
   before_action :set_quiz_attempt, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_quiz, only:[:new]
   # GET /quiz_attempts
   # GET /quiz_attempts.json
   def index
-    @quiz_attempts = QuizAttempt.all
+    @quiz_attempts = QuizAttempt.all    
   end
 
   # GET /quiz_attempts/1
@@ -15,6 +15,8 @@ class QuizAttemptsController < ApplicationController
   # GET /quiz_attempts/new
   def new
     @quiz_attempt = QuizAttempt.new
+    @quiz_attempt.quiz_id = current_quiz.id
+    @quiz_attempt.user_id = current_user.id
   end
 
   # GET /quiz_attempts/1/edit
@@ -28,7 +30,7 @@ class QuizAttemptsController < ApplicationController
 
     respond_to do |format|
       if @quiz_attempt.save
-        format.html { redirect_to @quiz_attempt, notice: 'Quiz attempt was successfully created.' }
+        format.html { redirect_to subject_path(current_subject.id), notice: 'Quiz attempt was successfully created.' }
         format.json { render :show, status: :created, location: @quiz_attempt }
       else
         format.html { render :new }
@@ -66,7 +68,12 @@ class QuizAttemptsController < ApplicationController
     def set_quiz_attempt
       @quiz_attempt = QuizAttempt.find(params[:id])
     end
-
+  
+    def set_quiz
+      @quiz = Quiz.find_by_id(params[:quiz_id])
+      session[:current_quiz] = @quiz.id
+    end
+  
     # Never trust parameters from the scary internet, only allow the white list through.
     def quiz_attempt_params
       params.require(:quiz_attempt).permit(:user_id, :quiz_id, :mark)
