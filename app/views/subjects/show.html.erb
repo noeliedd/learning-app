@@ -59,6 +59,9 @@
 <!-- ###################################### User View ###################################################### -->
 <hr />
   <tbody>
+    <% @quiz_attempts.each do |quiz_attempt|%>      
+        <p><%= quiz_attempt.mark %></p>
+    <% end %>    
     <% @topics.order(created_at: :asc).each do |topic| %>
      <h4><%= topic.name %></h4>       
 
@@ -77,8 +80,7 @@
                <th>Name:</th>
                <th>Level:</th>
            </tr>
-           <% @topic_quizzes.each do |quiz| %>        
-
+           <% @topic_quizzes.each do |quiz| %>     
                 <tr class="info">
                    <td>
                      <!--<% @attempts = @quiz_attempts.where(user_id: current_user.id) %> -->

@@ -1,29 +1,56 @@
-<%= form_for(@quiz_attempt) do |f| %>
+<%= bootstrap_form_for(@quiz_attempt) do |f| %>
   <% if @quiz_attempt.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@quiz_attempt.errors.count, "error") %> prohibited this quiz_attempt from being saved:</h2>
-
-      <ul>
+  <div id="error_explanation">
+    <h2><%= pluralize(@quiz_attempt.errors.count, "error") %> prohibited this quiz_attempt from being saved:</h2>
+    <ul>
       <% @quiz_attempt.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
-      </ul>
-    </div>
+    </ul>
+  </div>
   <% end %>
+  <%= f.text_field :user_id %>
+  <%= f.text_field :quiz_id %>
+  <%= f.text_field :mark %>
 
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.text_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :quiz_id %><br>
-    <%= f.text_field :quiz_id %>
-  </div>
-  <div class="field">
-    <%= f.label :mark %><br>
-    <%= f.text_field :mark %>
-  </div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Answer 1</th>
+      <th>Answer 2</th>
+      <th>Answer 3</th>
+      <th>Correct Answer</th>
+      <th>Check</th>
+      <th>Answer</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>      
+   <tbody>
+     <% @questions.each do |question| %>
+     <tr>  
+       <td><%= question.question %></td>
+       <td><%= question.ans1 %></td>
+       <td><%= question.ans2 %></td>
+       <td><%= question.ans3 %></td>
+       <td><%= question.correctAnswer %></td>
+       <td><%= check_box_tag "correct_answers[]", question.correctAnswer, false, :class => 'correctanswer' %></td>
+       <td><%= select_tag "user_picks[]", options_for_select([["Select One", ""], "1","2","3"]), disabled: true, 'data-id' => question.id %></td>       
+     </tr>
+   </tbody>
+
+    <% end %>
   <div class="actions">
-    <%= f.submit %>
+  <%= f.submit %>
   </div>
 <% end %>
+  <script type="text/javascript">
+    $('.correctanswer').on('click', function () {
+        var dataid = $(this).val();
+        if (this.checked) {
+            $('select[data-id="'+ dataid +'"]').prop('disabled', false);
+        } else {
+            $('select[data-id="'+ dataid +'"]').prop('disabled', true);
+        }
+    });
+  </script>
