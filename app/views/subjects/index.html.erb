@@ -1,4 +1,4 @@
-<h3>Listing subjects</h3>
+<h3>Subjects Available</h3>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -8,7 +8,7 @@
   <tbody>
     <% @subjects.each do |subject| %>
       <tr>
-        <td><%= link_to subject.name, subject %></td>
+        <td><h4><%= link_to subject.name, subject %></h4></td>
         <% if current_user.admin? %>
           <td><%= link_to 'Edit', edit_subject_path(subject) %></td>
           <td><%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>

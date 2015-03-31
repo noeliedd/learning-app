@@ -17,8 +17,13 @@ end
 
   # GET /notes/new
   def new
-    @note = Note.new
-    @note.topic_id = params[:topic_id]
+    if current_user.admin?
+      @note = Note.new
+      @note.topic_id = params[:topic_id]
+    else
+      flash[:notice] = "You do not have permission to access this page"
+      redirect_to root_path
+    end   
   end
 
   # GET /notes/1/edit
@@ -62,7 +67,7 @@ end
   def destroy
     @note.destroy
     respond_to do |format|
-      format.html { redirect_to notes_url, notice: 'Note was successfully destroyed.' }
+      format.html {redirect_to subject_path(current_subject.id), notice: 'Note was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

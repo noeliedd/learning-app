@@ -1,22 +1,29 @@
 class SubjectsController < ApplicationController
-  before_action :set_subject, only: [:show, :edit, :update, :destroy]
-  
+  before_action :set_subject, only: [:show, :edit, :update, :destroy]  
   respond_to :html
 
   def index
     @subjects = Subject.all
   end
 
-  def show
-    @quiz_attempts = QuizAttempt.all
-    @quizzes = Quiz.all
-    @notes = Note.all
-    @topics = Topic.where(:subject_id => @subject.id)     
+  def show        
+    @topics = Topic.where(:subject_id => @subject.id)
+    @topic_ids = @topics.map(&:id)
+    @quizzes = Quiz.where(:topic_id => @topic_ids)
+    @quiz_ids = @quizzes.map(&:id)
+    puts @quiz_ids.inspect
+    @quiz_attempts = QuizAttempt.where(quiz_id: @quiz_ids)    
+    @notes = Note.all        
   end
 
   def new
+    if current_user.admin?
     @subject = Subject.new
     respond_with(@subject)
+    else
+      flash[:notice] = "You do not have permission to access this page"
+      redirect_to root_path
+    end
   end
 
   def edit

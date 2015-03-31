@@ -1,33 +1,33 @@
 <h3><%= @subject.name %></h3>
+<h5>You must get over 70&#37; in each quiz to progress to the hardest!</h5>
 <!-- ###################################### Admin View ###################################################### -->
 <% if current_user.admin? %>
 <hr />
   <tbody>
     <% @topics.order(created_at: :asc).each do |topic| %>
-     <h4><%= topic.name %></h4>     
-      <ul>  
-          <li><%= link_to 'Click to Upload Notes', new_note_path(:topic_id => topic.id) %></li>
-          <li><%= link_to 'Click to Add Quiz', new_quiz_path(:topic_id => topic.id) %></li>
-          <li><%= link_to 'Edit Topic Name', edit_topic_path(topic) %></li>
-          <li><%= link_to 'Delete Topic', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>        
-      </ul>
-         <% @topic_notes = @notes.where(topic_id: topic.id) %>        
-         <h5>Notes:</h5>        
-         <% @topic_notes.each do |note| %>        
-           <ul>
-              <li><%= link_to note.filename, note %></li>
-           </ul>
-         <% end %>        
-         
-         <% @topic_quizzes = @quizzes.where(topic_id: topic.id) %> 
-         <h5>Quizzes:</h5>
-         <table class="table table-bordered">
-             <tr>
-               <th>Name:</th>
-               <th>Level:</th>
-               <th>Add/Edit Questions:</th>
-               <th>Delete Quiz:</th>
-           </tr>
+       <h4><%= topic.name %></h4>     
+       <ul>  
+         <li><%= link_to 'Click to Upload Notes', new_note_path(:topic_id => topic.id) %></li>
+         <li><%= link_to 'Click to Add Quiz', new_quiz_path(:topic_id => topic.id) %></li>
+         <li><%= link_to 'Edit Topic Name', edit_topic_path(topic) %></li>
+         <li><%= link_to 'Delete Topic', topic, method: :delete, data: { confirm: 'Are you sure?' } %></li>      
+       </ul>
+        <% @topic_notes = @notes.where(topic_id: topic.id) %>        
+          <h5>Notes:</h5>        
+          <% @topic_notes.each do |note| %>        
+            <ul>
+              <li><%= link_to note.filename, note %> &nbsp;&nbsp;<%= link_to 'Remove Notes', note, method: :delete, data: { confirm: 'Are you sure?' } %></li>         
+            </ul>
+        <% end %>           
+        <% @topic_quizzes = @quizzes.where(topic_id: topic.id) %> 
+           <h5>Quizzes:</h5>
+           <table class="table table-bordered">
+               <tr>
+                 <th>Name:</th>
+                 <th>Difficulty:</th>
+                 <th>Add/Edit Questions:</th>
+                 <th>Delete Quiz:</th>
+               </tr>
            <% @topic_quizzes.each do |quiz| %>            
                 <tr class="info">
                    <td>
@@ -53,47 +53,51 @@
    <% end %>
   </tbody>
 <br>
-<%= link_to "Back to Subjects", subjects_path %>
+  <%= link_to "Back to Subjects", subjects_path %>
   <%= button_to "Add Topic", new_topic_path, :class => "btn btn-large btn-primary pull-right", :method => :get  %>
 <% else %>
 <!-- ###################################### User View ###################################################### -->
 <hr />
   <tbody>
-    <% @quiz_attempts.each do |quiz_attempt|%>      
-        <p><%= quiz_attempt.mark %></p>
-    <% end %>    
     <% @topics.order(created_at: :asc).each do |topic| %>
-     <h4><%= topic.name %></h4>       
-
-         <% @topic_notes = @notes.where(topic_id: topic.id) %>        
-         <h5>Notes:</h5>        
-         <% @topic_notes.each do |note| %>        
-           <ul>
-              <li><%= link_to note.filename, note %></li>
-           </ul>
-         <% end %>     
-         
-         <% @topic_quizzes = @quizzes.where(topic_id: topic.id) %> 
-         <h5>Quizzes:</h5>
-         <table class="table table-bordered">
-             <tr>
-               <th>Name:</th>
-               <th>Level:</th>
-           </tr>
-           <% @topic_quizzes.each do |quiz| %>     
-                <tr class="info">
-                   <td>
-                     <!--<% @attempts = @quiz_attempts.where(user_id: current_user.id) %> -->
-                     <%= link_to quiz.name, new_quiz_attempt_path(:quiz_id => quiz.id) %>
-                   </td>
-                   <td>
-                     <%= quiz.level %>
-                   </td>   
-               </tr>
-            <% end %>  
-          </table>      
-    <hr class="soften" />
-   <% end %>
+       <h4><%= topic.name %></h4>
+        <% @topic_notes = @notes.where(topic_id: topic.id) %>        
+        <h5>Notes:</h5>        
+        <% @topic_notes.each do |note| %>        
+          <ul>
+            <li><%= link_to note.filename, note %></li>
+          </ul>
+        <% end %>              
+        <% @topic_quiz_attempts = @quiz_attempts.where(topic_id: topic.id) %> 
+        <h5>Previous Quiz Attempts:</h5>
+        <table class="table table-bordered">
+          <tr>
+            <th>Name:</th>
+            <th>Difficulty:</th>
+            <th>Result &#37;</th>
+          </tr>
+        <% @topic_quiz_attempts.order(created_at: :asc).each do |quiz_attempt| %>     
+          <tr class="info">
+            <td>
+              <%= quiz_attempt.quiz.name %>
+            </td>
+            <td>
+              <%= quiz_attempt.quiz.level %>
+            </td>  
+            <td>
+              <%= quiz_attempt.mark.round(1) %>
+            </td>                   
+          </tr>
+        <% end %>  
+        </table>  
+    <% @topic_quizzes = @quizzes.select{|q| q.topic_id == topic.id} %>
+      <% unless @topic_quizzes.empty? %>
+          <%= link_to "Attempt Quiz", new_quiz_attempt_path(:topic_id => topic.id) %>
+      <% else %>
+          <h5>No quizzes for this topic</h5>
+      <% end %>
+      <hr class="soften" />
+    <% end %>
   </tbody>
 <br>
 <%= link_to "Back to Subjects", subjects_path %>

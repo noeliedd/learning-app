@@ -44,12 +44,16 @@ ActiveRecord::Schema.define(version: 20150327163905) do
   create_table "quiz_attempts", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "quiz_id"
-    t.decimal  "mark"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "topic_id"
+    t.string   "level"
+    t.boolean  "passed",     default: false
+    t.float    "mark"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "quiz_attempts", ["quiz_id"], name: "index_quiz_attempts_on_quiz_id", using: :btree
+  add_index "quiz_attempts", ["topic_id"], name: "index_quiz_attempts_on_topic_id", using: :btree
   add_index "quiz_attempts", ["user_id"], name: "index_quiz_attempts_on_user_id", using: :btree
 
   create_table "quizzes", force: :cascade do |t|
@@ -99,6 +103,7 @@ ActiveRecord::Schema.define(version: 20150327163905) do
   add_foreign_key "notes", "topics"
   add_foreign_key "questions", "quizzes"
   add_foreign_key "quiz_attempts", "quizzes"
+  add_foreign_key "quiz_attempts", "topics"
   add_foreign_key "quiz_attempts", "users"
   add_foreign_key "quizzes", "topics"
 end

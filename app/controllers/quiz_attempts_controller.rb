@@ -1,6 +1,6 @@
 class QuizAttemptsController < ApplicationController
   before_action :set_quiz_attempt, only: [:show, :edit, :update, :destroy]
-  before_action :set_quiz, only:[:new]
+  
   # GET /quiz_attempts
   # GET /quiz_attempts.json
   def index
@@ -14,10 +14,15 @@ class QuizAttemptsController < ApplicationController
 
   # GET /quiz_attempts/new
   def new
-    @questions = Question.where('quiz_id' => params[:quiz_id])
+    @topic = Topic.find_by_id(params[:topic_id])
+    level = Userquizattempt.getquiz(@topic, current_user.id)
+    @quiz = Quiz.where(topic_id: params[:topic_id].to_i, level: level.to_s).first
+    @questions = Question.where(quiz_id: @quiz.id)
     @quiz_attempt = QuizAttempt.new
-    @quiz_attempt.quiz_id = current_quiz.id
-    @quiz_attempt.user_id = current_user.id  
+    @quiz_attempt.quiz_id = @quiz.id
+    @quiz_attempt.user_id = current_user.id 
+    @quiz_attempt.topic_id = params[:topic_id]
+    @quiz_attempt.level = level    
   end
 
   # GET /quiz_attempts/1/edit
@@ -27,38 +32,29 @@ class QuizAttemptsController < ApplicationController
   # POST /quiz_attempts
   # POST /quiz_attempts.json
   def create   
-    puts"Here is the total 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    puts"Here is the total 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    puts"Here is the total 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-    total = Question.where('quiz_id' => current_quiz.id).count
-    #puts  "Let's talk about #{total}."
     if params[:user_picks].nil?
-      redirect_to new_quiz_attempt_path(quiz_id: current_quiz.id), :flash => { :error => 'Nothing submitted' } 
+         redirect_to subject_path(current_subject.id), :flash => { :error => 'Nothing submitted' } 
     else
-      check_answers(params[:user_picks],params[:correct_answers])
-      #@user_picks = params[:user_picks]
-     # @correct_answers = params[:correct_answers]
-     # @user_picks.zip(@correct_answers).each do |user_picks, correct_answers|
-     #   if user_picks == correct_answers
-     #     puts"Yes"
-     #   else
-     #     puts "No"
-     #   end
-     #end
-      
-      puts"Here is the params 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-      puts params.inspect
-      @quiz_attempt = QuizAttempt.new(quiz_attempt_params)
+      #Get Total questions relating to quiz_id
+      total_questions = Question.where('quiz_id' => current_quiz.id).count
+      #Call get_mark method in module to return users mark
+      mark = Checkquiz.getmark(params[:user_picks],params[:correct_answers],total_questions)
 
-      respond_to do |format|
-        if @quiz_attempt.save
-          format.html { redirect_to subject_path(current_subject.id), notice: 'Quiz attempt was successfully created.' }
-          format.json { render :show, status: :created, location: @quiz_attempt }
-        else
-          format.html { render :new }
-          format.json { render json: @quiz_attempt.errors, status: :unprocessable_entity }
+        @quiz_attempt = QuizAttempt.new(quiz_attempt_params)
+        if mark > 70
+          @quiz_attempt.passed = true
         end
-      end
+        @quiz_attempt.mark = mark
+
+        respond_to do |format|
+          if @quiz_attempt.save
+            format.html { redirect_to subject_path(current_subject.id), notice: "Quiz completed. You scored #{'%.00f' % mark} percent for this attempt"  }
+            format.json { render :show, status: :created, location: @quiz_attempt }
+          else
+            format.html { render :new }
+            format.json { render json: @quiz_attempt.errors, status: :unprocessable_entity }
+          end
+        end
     end
   end
 
@@ -87,11 +83,7 @@ class QuizAttemptsController < ApplicationController
   end
 
   private
-    
-   def set_quiz
-      @quiz = Quiz.find_by_id(params[:quiz_id])
-      session[:current_quiz] = @quiz.id
-    end  
+
     # Use callbacks to share common setup or constraints between actions.
     def set_quiz_attempt
       @quiz_attempt = QuizAttempt.find(params[:id])
@@ -99,6 +91,6 @@ class QuizAttemptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def quiz_attempt_params
-      params.require(:quiz_attempt).permit(:user_id, :quiz_id, :mark)
+      params.require(:quiz_attempt).permit(:user_id, :quiz_id,:level,:passed,:topic_id,:mark)
     end
 end

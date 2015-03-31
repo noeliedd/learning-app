@@ -12,6 +12,10 @@ gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'bootstrap_form'
 
+# CUSTOM GEM'S
+gem 'checkquiz', '~> 0.0.0'
+gem 'userquizattempt', '~> 0.0.3'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views

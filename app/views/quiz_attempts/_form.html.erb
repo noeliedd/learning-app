@@ -1,17 +1,20 @@
+<h4>70% needed to pass</h4>
 <%= bootstrap_form_for(@quiz_attempt) do |f| %>
   <% if @quiz_attempt.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@quiz_attempt.errors.count, "error") %> prohibited this quiz_attempt from being saved:</h2>
-    <ul>
-      <% @quiz_attempt.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
+    <div id="error_explanation">
+      <ul>
+        <% @quiz_attempt.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
-  <%= f.text_field :user_id %>
-  <%= f.text_field :quiz_id %>
-  <%= f.text_field :mark %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :quiz_id %>
+  <%= f.hidden_field :mark %>
+  <%= f.hidden_field :passed %>
+  <%= f.hidden_field :level %>
+  <%= f.hidden_field :topic_id %>
 
 <table class="table table-bordered table-striped">
   <thead>
@@ -20,30 +23,27 @@
       <th>Answer 1</th>
       <th>Answer 2</th>
       <th>Answer 3</th>
-      <th>Correct Answer</th>
-      <th>Check</th>
       <th>Answer</th>
       <th colspan="3"></th>
     </tr>
   </thead>      
    <tbody>
      <% @questions.each do |question| %>
-     <tr>  
-       <td><%= question.question %></td>
-       <td><%= question.ans1 %></td>
-       <td><%= question.ans2 %></td>
-       <td><%= question.ans3 %></td>
-       <td><%= question.correctAnswer %></td>
-       <td><%= check_box_tag "correct_answers[]", question.correctAnswer, false, :class => 'correctanswer' %></td>
-       <td><%= select_tag "user_picks[]", options_for_select([["Select One", ""], "1","2","3"]), disabled: true, 'data-id' => question.id %></td>       
-     </tr>
+       <tr>  
+         <td><%= question.question %></td>
+         <td><%= question.ans1 %></td>
+         <td><%= question.ans2 %></td>
+         <td><%= question.ans3 %></td>
+         <td><%= select_tag "user_picks[]", options_for_select([["Select One", ""], "1","2","3"]),required: true, disabled: false, 'data-id' => question.id %></td>  
+         <td type="hidden"><%= check_box_tag "correct_answers[]", question.correctAnswer, true, hidden:true, :class => 'correctanswer' %></td>       
+       </tr>
    </tbody>
-
-    <% end %>
+    <% end %>  
   <div class="actions">
-  <%= f.submit %>
-  </div>
+    <%= f.submit "Submit Attempt", :class => 'btn btn-large btn-primary pull-right'  %>
+  </div><br />
 <% end %>
+  
   <script type="text/javascript">
     $('.correctanswer').on('click', function () {
         var dataid = $(this).val();

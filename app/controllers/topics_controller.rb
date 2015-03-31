@@ -4,7 +4,12 @@ class TopicsController < ApplicationController
   respond_to :html
 
   def index
-    @topics = Topic.where('subject_id' => current_subject.id)
+    if current_user.admin?    
+      @topics = Topic.where('subject_id' => current_subject.id)
+    else
+      flash[:notice] = "You do not have permission to access this page"
+      redirect_to root_path      
+    end
   end
 
   def show
@@ -14,7 +19,12 @@ class TopicsController < ApplicationController
   end
 
   def new
+    if current_user.admin?
     @topic = Topic.new
+    else
+      flash[:notice] = "You do not have permission to access this page"
+      redirect_to root_path
+    end        
   end
 
   def edit
