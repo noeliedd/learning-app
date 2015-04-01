@@ -1,11 +1,18 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: devdju1phmlrb1
+  database: learning_app-test
   pool: 5
-  host: ec2-23-23-225-50.compute-1.amazonaws.com
-  username: bgyrzdhfdrcktu
-  password: 7EqAqQxZA6RTdFBzmZLyuMCReB
+  host: localhost
+  username: action
+  password: password
+ # adapter: postgresql
+ # encoding: unicode
+ # database: devdju1phmlrb1
+ # pool: 5
+ # host: ec2-23-23-225-50.compute-1.amazonaws.com
+ # username: bgyrzdhfdrcktu
+ # password: 7EqAqQxZA6RTdFBzmZLyuMCReB
 
 test:
   adapter: postgresql
