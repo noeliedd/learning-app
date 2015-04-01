@@ -12,7 +12,7 @@ class SubjectsController < ApplicationController
     @quizzes = Quiz.where(:topic_id => @topic_ids)
     @quiz_ids = @quizzes.map(&:id)
     puts @quiz_ids.inspect
-    @quiz_attempts = QuizAttempt.where(quiz_id: @quiz_ids)    
+    @quiz_attempts = QuizAttempt.where(quiz_id: @quiz_ids, user_id: current_user.id)    
     @notes = Note.all        
   end
 
