@@ -23,6 +23,7 @@ class QuizAttemptsController < ApplicationController
     @quiz_attempt.user_id = current_user.id 
     @quiz_attempt.topic_id = params[:topic_id]
     @quiz_attempt.level = level    
+    session[:current_quiz] = @quiz.id
   end
 
   # GET /quiz_attempts/1/edit
@@ -37,6 +38,8 @@ class QuizAttemptsController < ApplicationController
     else
       #Get Total questions relating to quiz_id
       total_questions = Question.where('quiz_id' => current_quiz.id).count
+      puts"Here comes the count"
+      puts total_questions
       #Call get_mark method in module to return users mark
       mark = Checkquiz.getmark(params[:user_picks],params[:correct_answers],total_questions)
 
